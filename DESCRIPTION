@@ -1,9 +1,13 @@
 Package: dmlUtils
 Title: Utilities for DoubleML
 Version: 0.0.0.9000
-Authors@R:
-    person("Apoorva", "Lal", , "lal.apoorva@.gmail.com")
+Authors@R: person("Apoorva", "Lal", email = "lal.apoorva@gmail.com", role = c("aut", "cre"))
 Description: utilities for DoubleML
+Depends:
+  R (>= 4.1),
+  data.table,
+  DoubleML,
+  mlr3
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

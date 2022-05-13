@@ -3,3 +3,5 @@
 export(dmlTab)
 export(irmFit)
 export(plrFit)
+
+import(DoubleML)
