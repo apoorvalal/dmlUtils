@@ -6,11 +6,9 @@ make tables with estimates and RMSEs.
 ```r
 rm(list = ls())
 set.seed(42)
-libreq(hdm, ggplot2, data.table, knitr,
-    DoubleML, mlr3, mlr3learners, mlr3extralearners
-  )
+p_load(knitr,DoubleML, mlr3, mlr3learners)
 theme_set(lal_plot_theme())
-source("R/dmlUtils.R")
+library(dmlUtils)
 ```
 
 ## Data Prep
@@ -27,7 +25,9 @@ model_flex = as.data.table(model.frame(formula_flex, lalonde.exp))
 x_cols = colnames(model_flex)[-c(1,2)]
 data_ml = DoubleMLData$new(model_flex, y_col = "re78", d_cols = "treat",
           x_cols = x_cols)
+```
 
+```
 # Classes 'DoubleMLData', 'R6' <DoubleMLData>
 #   Public:
 #     all_variables: active binding
@@ -73,7 +73,9 @@ trees       = lrn("regr.rpart");       set_threads(trees)
 trees_class = lrn("classif.rpart");    set_threads(trees_class)
 boost       = lrn("regr.glmboost");    set_threads(boost)
 boost_class = lrn("classif.glmboost"); set_threads(boost_class)
+```
 
+```
 # <LearnerRegrCVGlmnet:regr.cv_glmnet>
 # * Model: -
 # * Parameters: family=gaussian, nfolds=5, s=lambda.min
