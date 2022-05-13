@@ -25,6 +25,24 @@ model_flex = as.data.table(model.frame(formula_flex, lalonde.exp))
 x_cols = colnames(model_flex)[-c(1,2)]
 data_ml = DoubleMLData$new(model_flex, y_col = "re78", d_cols = "treat",
           x_cols = x_cols)
+          
+# alternative setup with interactions
+data(lalonde.exp)
+# %%
+y = 're78'
+w = 'treat'
+fx = "~ -1 +(poly(age, 3, raw = T) + poly(education, 3, raw = T) +
+                  poly(re74, 3, raw = T) + poly(re75, 3, raw = T) +
+                  black + hispanic + married + nodegree + u74 + u75
+                )^2"
+X = model.matrix(as.formula(fx), data = lalonde.exp)
+# drop constant columns
+X = X[, -which(apply(X, 2, var) == 0) ]
+# stack
+d = data.table(y = lalonde.exp[[y]], w = lalonde.exp[[w]], X) %>% clean_names()
+# init object
+data_ml = DoubleMLData$new(d, y_col = 'y', d_cols = 'w',
+          x_cols = setdiff(colnames(d), c('y', 'w')))
 ```
 
 ```
