@@ -6,8 +6,10 @@ make tables with estimates and RMSEs.
 ```r
 rm(list = ls())
 set.seed(42)
+library(pacman)
 p_load(knitr,DoubleML, mlr3, mlr3learners)
-theme_set(lal_plot_theme())
+
+# this library
 library(dmlUtils)
 ```
 
@@ -44,7 +46,7 @@ d = data.table(y = lalonde.exp[[y]], w = lalonde.exp[[w]], X) %>% clean_names()
 data_ml = DoubleMLData$new(d, y_col = 'y', d_cols = 'w',
           x_cols = setdiff(colnames(d), c('y', 'w')))
 ```
-
+This is a `DoubleMLData` object initialised above.
 ```
 # Classes 'DoubleMLData', 'R6' <DoubleMLData>
 #   Public:
@@ -79,7 +81,8 @@ data_ml = DoubleMLData$new(d, y_col = 'y', d_cols = 'w',
 #
 ```
 
-## Initialise learner objects
+## Initialise `mlr3` learners 
+
 ```r
 # %% learners
 lgr::get_logger("mlr3")$set_threshold("warn")
@@ -109,56 +112,7 @@ boost_class = lrn("classif.glmboost"); set_threads(boost_class)
 # * Predict Type: response
 # * Feature types: logical, integer, numeric
 # * Properties: multiclass, selected_features, twoclass, weights
-
-# <LearnerRegrRanger:regr.ranger>
-# * Model: -
-# * Parameters: num.threads=6
-# * Packages: mlr3, mlr3learners, ranger
-# * Predict Type: response
-# * Feature types: logical, integer, numeric, character, factor, ordered
-# * Properties: hotstart_backward, importance, oob_error, weights
-
-# <LearnerClassifRanger:classif.ranger>
-# * Model: -
-# * Parameters: num.threads=6
-# * Packages: mlr3, mlr3learners, ranger
-# * Predict Type: response
-# * Feature types: logical, integer, numeric, character, factor, ordered
-# * Properties: hotstart_backward, importance, multiclass, oob_error,
-#   twoclass, weights
-
-# <LearnerRegrRpart:regr.rpart>: Regression Tree
-# * Model: -
-# * Parameters: xval=0
-# * Packages: mlr3, rpart
-# * Predict Type: response
-# * Feature types: logical, integer, numeric, factor, ordered
-# * Properties: importance, missings, selected_features, weights
-
-# <LearnerClassifRpart:classif.rpart>: Classification Tree
-# * Model: -
-# * Parameters: xval=0
-# * Packages: mlr3, rpart
-# * Predict Type: response
-# * Feature types: logical, integer, numeric, factor, ordered
-# * Properties: importance, missings, multiclass, selected_features,
-#   twoclass, weights
-
-# <LearnerRegrGLMBoost:regr.glmboost>
-# * Model: -
-# * Parameters: list()
-# * Packages: mlr3, mlr3extralearners, mboost
-# * Predict Type: response
-# * Feature types: integer, numeric, factor, ordered
-# * Properties: weights
-
-# <LearnerClassifGLMBoost:classif.glmboost>
-# * Model: -
-# * Parameters: list()
-# * Packages: mlr3, mlr3extralearners, mboost
-# * Predict Type: response
-# * Feature types: integer, numeric, factor, ordered
-# * Properties: twoclass, weights
+<truncated> ...
 ```
 
 ## Fit models
@@ -176,6 +130,8 @@ rforsIRM = irmFit(data_ml, rf,    rf_class)
 treesIRM = irmFit(data_ml, trees, trees_class)
 boostIRM = irmFit(data_ml, boost, boost_class)
 ```
+
+## table util to pass model fits
 
 ```r
 dmlTab(lassoPLR, rforsPLR, treesPLR, boostPLR, lassoIRM, rforsIRM, treesIRM, boostIRM)
